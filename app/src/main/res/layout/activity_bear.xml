@@ -11,20 +11,18 @@
 
 <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appbar"
-
     android:layout_width="match_parent"
     android:layout_height="192dp"
     android:background="#A79277"
     >
 
-    <com.google.android.material.appbar.CollapsingToolbarLayout
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
+        android:layout_height="?attr/actionBarSize"
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
         app:toolbarId="@+id/toolbar">
 
-    </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
@@ -36,8 +34,6 @@
 <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="707dp"
-
-
     android:background="#FAF6E3"
     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
