@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1001516909652",
+    "project_id": "sensorprogramming-28ca1",
+    "storage_bucket": "sensorprogramming-28ca1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1001516909652:android:08e4ae3b9416b3d80259c1",
+        "android_client_info": {
+          "package_name": "com.example.sensorapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH12NdCje4bYVh3jg6CaAen7j5p2mCiDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
