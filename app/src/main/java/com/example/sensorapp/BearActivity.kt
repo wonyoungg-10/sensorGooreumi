@@ -10,7 +10,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sensorapp.databinding.ActivityBearBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -32,7 +35,7 @@ class BearActivity : AppCompatActivity() {
                 binding.wakeTime.text = userWake
                 binding.sleepTime.text = userSleep
 
-                // 파이어베이스 사용자 정보 업데이트
+                // 파이어베이스에 사용자 정보 업데이트
                 updateUserInDatabase(userName, userWake, userSleep)
             }
         }
@@ -50,7 +53,7 @@ class BearActivity : AppCompatActivity() {
 
 
         // 우리가 함께한지 +N일
-        val startDate = LocalDate.of(2024, 11, 15)
+        val startDate = LocalDate.of(2024, 12, 1)
         val today = LocalDate.now()
         val dayDifference = ChronoUnit.DAYS.between(startDate, today) + 1
 
@@ -74,16 +77,9 @@ class BearActivity : AppCompatActivity() {
             requestLauncher.launch(intent)
         }
 
-        // 별 모양 FloatingActionButton 클릭하면 이전의 감정 기록을 볼 수 있는 페이지로 이동
-        binding.diary.setOnClickListener {
-            val intent = Intent(this, DiaryActivity::class.java)
-            startActivity(intent)
-        }
-
-
         // 파이어베이스 관련
 
-// 저장 버튼 클릭 시 감정 저장
+        // 저장 버튼 클릭 시 감정 저장
         binding.save.setOnClickListener {
             // 사용자가 입력한 감정 텍스트 가져오기
             val userEmotion = binding.writeFeeling.text.toString()  // 감정 입력 텍스트 (EditText에서 가져오기)
@@ -92,13 +88,13 @@ class BearActivity : AppCompatActivity() {
                 // 현재 날짜
                 val currentDate = LocalDate.now().toString()  // 예: "2024-11-29"
 
-                // 감정에 맞는 응답 생성 (이 예시에서는 간단한 응답만 생성)
-                val response = generateResponse(userEmotion)
+                // 나중에 응답이 생성될 예정 -> 우선 비워두기
+                // val response = ""
 
                 // 감정과 응답을 Map 형태로 준비
                 val entry = mapOf(
-                    "emotion" to userEmotion,
-                    "response" to response
+                    "emotion" to userEmotion
+                    // "response" to response
                 )
 
                 // Firebase에 해당 날짜의 감정 기록 삽입
@@ -116,9 +112,8 @@ class BearActivity : AppCompatActivity() {
                 userRef.updateChildren(userData)
                     .addOnSuccessListener {
                         // entries 경로에 감정 데이터 추가
-                        val entriesRef =
-                            FirebaseDatabase.getInstance().getReference("entries").child(userId)
-                        entriesRef.child(currentDate).setValue(entry)
+                        val entriesRef = FirebaseDatabase.getInstance().getReference("entries")
+                        entriesRef.setValue(entry)
                             .addOnSuccessListener {
                                 // 저장 성공 후 처리
                                 Toast.makeText(this, "감정이 저장되었습니다.", Toast.LENGTH_SHORT).show()
@@ -162,14 +157,40 @@ class BearActivity : AppCompatActivity() {
             }
     }
 
-    // 감정에 맞는 응답을 생성하는 함수 (단순 예시)
-    private fun generateResponse(emotion: String): String {
-        return when (emotion) {
-            "행복하다" -> "오늘은 행복한 하루를 보냈구나! 즐거웠다니 나도 기분이 좋다~"
-            "지쳤어요" -> "오늘 하루 힘들었지... 푹 쉬어. 내일은 행복하길!"
-            "슬프다" -> "슬픈 일이 있었구나... 괜찮아, 내가 항상 옆에 있어."
-            else -> "오늘 하루도 잘 보냈네! 잘했어!"
+    override fun onStart() {
+        super.onStart()
+
+        // 친밀도 데이터에 대한 실시간 리스너 등록
+        userRef.child("actions").addValueEventListener(friendlinessListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        // Activity가 중단될 때 리스너 제거
+        userRef.child("actions").removeEventListener(friendlinessListener)
+    }
+
+    // 리스너 정의
+    private val friendlinessListener = object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            // Firebase에서 데이터 가져오기
+            val feedCount = snapshot.child("feeding").getValue(Int::class.java) ?: 0
+            val playCount = snapshot.child("playing").getValue(Int::class.java) ?: 0
+
+            // 친밀도 계산 및 ProgressBar 업데이트
+            val friendliness = calculateFriendliness(feedCount, playCount)
+            binding.count.progress = friendliness.coerceIn(0, 100)
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            // 오류 처리
+            Toast.makeText(this@BearActivity, "데이터 로드 실패: ${error.message}", Toast.LENGTH_SHORT)
+                .show()
         }
     }
+    // 친밀도 계산 함수 -> ProgressBar 업데이트되는 것이 잘 보이도록,, 우선 크게
+    private fun calculateFriendliness(feedCount: Int, playCount: Int): Int {
+        return (feedCount * 4) + (playCount * 8)
+    }
 }
-

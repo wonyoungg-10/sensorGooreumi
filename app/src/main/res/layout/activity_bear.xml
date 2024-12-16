@@ -12,23 +12,28 @@
 <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appbar"
     android:layout_width="match_parent"
-    android:layout_height="192dp"
+    android:layout_height="250dp"
     android:background="#A79277"
     >
-
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        app:toolbarId="@+id/toolbar">
-
-    </androidx.appcompat.widget.Toolbar>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".BearActivity" />
+        tools:context=".BearActivity" >
+
+        <ImageButton
+            android:id="@+id/userSetting"
+            android:layout_width="153dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/bear"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.appbar.AppBarLayout>
 
 <androidx.core.widget.NestedScrollView
@@ -57,8 +62,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="오늘의 감정을 기록해보세요."
-                android:textSize="20dp"
+                android:textSize="23dp"
                 android:textStyle="bold"
+                android:layout_marginBottom="12dp"
                 />
 
             <EditText
@@ -72,16 +78,19 @@
                 android:padding="5dp"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
-                android:lines="6" />
+                android:textSize="18sp"
+                android:lines="8" />
 
             <Button
                 android:id="@+id/save"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
+                android:layout_width="120dp"
+                android:layout_height="55dp"
                 android:layout_gravity="right"
-                android:layout_marginRight="10dp"
+                android:layout_margin="10dp"
                 android:backgroundTint="#A79277"
                 android:text="저장"
+                android:textSize="19sp"
+                android:textStyle="bold"
                 />
         </LinearLayout>
 
@@ -103,13 +112,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="평소 기상 시간"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="200dp"
                     android:layout_height="30dp"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:inputType="time"
                     android:layout_weight="2"
                     android:layout_marginLeft="30dp"
@@ -151,38 +160,19 @@
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/diary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/btn_star"
-        app:backgroundTint="#A79277" />
-
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_anchor="@+id/appbar"
     app:layout_anchorGravity="center">
 
-    <ImageButton
-        android:id="@+id/userSetting"
-        android:layout_width="153dp"
-        android:layout_height="140dp"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        android:src="@drawable/bear"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="28dp"
-        android:text="O O O"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:text="dnjsdud"
         android:textColor="#FAF6E3"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -194,10 +184,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="93dp"
+        android:layout_marginTop="130dp"
         android:text="우리가 함께한지 "
         android:textColor="#FAF6E3"
-        android:textSize="19sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -207,10 +197,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="130dp"
         android:text=" + 35일"
         android:textColor="#FAF6E3"
-        android:textSize="19sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -219,13 +209,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="173dp"
         android:text="친밀도"
         android:textColor="#FAF6E3"
-        android:textSize="19sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/count"
@@ -233,7 +223,7 @@
         android:layout_width="290dp"
         android:layout_height="20dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="142dp"
+        android:layout_marginTop="180dp"
         android:progress="0"
         android:max="100"
         app:layout_constraintStart_toEndOf="@+id/textView5"
