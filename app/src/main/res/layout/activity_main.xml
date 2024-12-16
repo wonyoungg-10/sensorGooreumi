@@ -17,7 +17,7 @@ tools:context=".MainActivity">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="달 곰 이"
+            android:text="구름이"
             android:textSize="60sp"
             android:textStyle="bold"/>
 
