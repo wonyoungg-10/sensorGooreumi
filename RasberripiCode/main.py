@@ -83,8 +83,11 @@ def monitor_sensor(sensor_id, device_file):
                 save_to_firebase(sensor_id, temperature)
                 print(f"{sensor_id}: Uploaded temperature {temperature}°C to Firebase.")
                 uploaded_once = True
+                
                 temp_file_name = f"temperature_{round(temperature*4)/4.0:.2f}.mp3"
-                play_mp3(temp_file_name)
+                audio_folder = "/home/pi/gooreumi/audio_files"
+                audio_file_path = os.path.join(audio_folder, temp_file_name)
+                play_mp3(audio_file_path)
         else:
             if last_measure_time is not None:
                 print(f"{sensor_id}: Temperature dropped below {TEMP_THRESHOLD}°C, resetting.")
@@ -183,12 +186,12 @@ def check_and_execute():
         sleep_time, wake_time = get_sleep_and_wake_time()
         if is_time_to_execute(sleep_time):
             print(f"Time to sleep: {sleep_time}")
-            download_audio("emotion_audio5.mp3", "sleep.mp3")
-            play_mp3("sleep.mp3")
+            download_audio("emotion_audio5.mp3", "/home/pi/gooreumi/audio_files/sleep.mp3")
+            play_mp3("/home/pi/gooreumi/audio_files/sleep.mp3")
         elif is_time_to_execute(wake_time):
             print(f"Time to wake up: {wake_time}")
-            download_audio("weather_audio.mp3", "wakeup.mp3")
-            play_mp3("wakeup.mp3")
+            download_audio("weather_audio.mp3", "/home/pi/gooreumi/audio_files/wakeup.mp3")
+            play_mp3("/home/pi/gooreumi/audio_files/wakeup.mp3")
         time.sleep(30)
 
 # Starting threads for each function
